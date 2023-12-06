@@ -10,20 +10,21 @@
 <body>
     <div class="wrapper">
         <header>
-            <h1>QR Code Generator</h1>
-            <p>Please type your RFID Number and Non-Residence unique number.</p>
+            <h1>Residence QR Code Generator</h1>
         </header>
+        <input type="radio" id="html" name="fav_language" value="Click">
+        <label style="font-size:12px;" for="html" onclick="generateRandomNumber()">Click me to select a random number for your QR code.</label>
+
         <div class="form">
-            <input type="text" placeholder="Enter RFID Number...">
-            <input type="text" placeholder="Enter Non-Residence unique number... ">
-            <input type="text" placeholder="Number of generated QR code...">
+            <input type="text" placeholder="Enter RFID Number..." required>
+            <input type="text" id="qrCodeInput" placeholder="Your QR code number... " required disabled>
             <button id="generateBtn">Generate QR Code</button>
         </div>
         <div class="qr-code">
             <img src="" alt="">
         </div>
         <div class="form-1">
-            <button id="downloadBtn">Download QR Code</button>
+            <!-- <button id="downloadBtn">Download QR Code</button> -->
             <button id="logoutBtn">Logout</button>
         </div>
     </div>
@@ -56,22 +57,31 @@
             });
         });
 
-        // Download QR Code
-        document.getElementById("downloadBtn").addEventListener("click", async () => {
-            const dataUrl = qrImg.src;
-            const blob = await fetch(dataUrl).then(response => response.blob());
+        // // Download QR Code
+        // document.getElementById("downloadBtn").addEventListener("click", async () => {
+        //     const dataUrl = qrImg.src;
+        //     const blob = await fetch(dataUrl).then(response => response.blob());
 
-            const a = document.createElement("a");
-            const url = window.URL.createObjectURL(blob);
-            a.href = url;
-            a.download = "qrcode.png";
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            window.URL.revokeObjectURL(url);
-        });
+        //     const a = document.createElement("a");
+        //     const url = window.URL.createObjectURL(blob);
+        //     a.href = url;
+        //     a.download = "qrcode.png";
+        //     document.body.appendChild(a);
+        //     a.click();
+        //     document.body.removeChild(a);
+        //     window.URL.revokeObjectURL(url);
+        // });
         document.getElementById("logoutBtn").addEventListener("click", () => {
             window.location.href = "login.html";
+        });
+        const radioBtn = document.getElementById("html");
+        radioBtn.addEventListener("click", () => {
+            // Generate a random 4-digit number
+            const randomNumber = Math.floor(1000 + Math.random() * 9000);
+
+            // Display the random number in the QR code input field
+            const qrCodeInput = document.getElementById("qrCodeInput");
+            qrCodeInput.value = randomNumber;
         });
     </script>
 </body>

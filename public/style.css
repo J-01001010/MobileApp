@@ -29,16 +29,19 @@ body {
 header h1 {
     font-size: 21px;
     font-weight: 500;
+    margin-bottom: 40px;
+
 }
 
 header p {
     margin-top: 5px;
+    margin-bottom: 40px;
     color: #474747;
     font-size: 16px;
 }
 
 .wrapper .form {
-    margin: 20px 0 30px;
+    margin: 10px 0 30px;
 }
 
 .form :where(input, button) {
