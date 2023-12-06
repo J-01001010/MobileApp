@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>Login Form</title>
+  <!-- bootstrap core css -->
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+
+  <!-- fonts style -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+  <!--owl slider stylesheet -->
+  <link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+
+  <!-- font awesome style -->
+  <link href="css/font-awesome.min.css" rel="stylesheet" />
+
+  <!-- Custom styles for this template -->
+  <link href="css/style.css" rel="stylesheet" />
+  <!-- responsive style -->
+  <link href="css/responsive.css" rel="stylesheet" />
+
+  <script src="public/js/script.js"></script>
+
+</head>  
+<body>
+  <style>
+    body {
+      background-image: url(../images/slider-bg3.jpg);
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      height: 87vh;
+      margin: 0;
+    }
+  </style>
+  <div class="login-container">
+    <p class="welcome-message">
+      <br><b style="font-size: 25px;">Welcome to Monte Briza!</b></br>
+      <br>Login to access your account and explore the latest updates and services just for you.</br>
+    </p>
+    
+    <form id="loginForm" action="/login" method="post">
+      <label class="label" for="username">Username:</label>
+      <input class="input-field" type="text" id="username" name="username" required>
+    
+      <label class="label" for="password">Password:</label>
+      <input class="input-field" type="password" id="password" name="password" required>
+      
+      <label class="checkbox-label" for="showPassword">
+        <input class="checkbox" type="checkbox" id="showPassword" onclick="togglePassword()"> Show Password
+      </label>
+    
+      <button class="login-btn" type="submit">Login</button>
+    </form>
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const loginContainer = document.getElementById('loginForm');
+        attachLoginHandler(loginContainer);
+      });
+
+      function attachLoginHandler(formElement) {
+        formElement.addEventListener("submit", handleLogin);
+      }
+
+      function handleLogin(event) {
+        event.preventDefault();
+        const formData = new FormData(event.target);
+
+        fetch("/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(Object.fromEntries(formData)),
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not okay");
+            }
+            return response.text();
+          })
+          .then(data => handleLoginResponse(data))
+          .catch(error => {
+            console.error("Client error:", error);
+            alert("An error occurred. Please try again.");
+          });
+      }
+
+      function handleLoginResponse(data) {
+        console.log("Client received data:", data);
+
+        if (data.startsWith("Invalid username or password")) {
+          alert("Invalid username or password. Please check your credentials and try again.");
+        } else if (data.startsWith("Internal server error")) {
+          alert("Internal server error. Please try again later.");
+        } else if (data.startsWith("Login successful")) {
+          alert("Login successfully. Welcome residence of Monte Brisa.");
+          window.location.href = '/qrgen.html';
+        } else {
+          console.error("Server response:", data);
+          alert("An unexpected error occurred. Please try again.");
+        }
+      }
+      function togglePassword() {
+          var passwordInput = document.getElementById("password");
+          if (passwordInput.type === "password") {
+              passwordInput.type = "text";
+          } else {
+              passwordInput.type = "password";
+          }
+      }
+    </script>
+  
+
+  <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+  <!-- popper js -->
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+  </script>
+  <!-- bootstrap js -->
+  <script type="text/javascript" src="js/bootstrap.js"></script>
+  <!-- owl slider -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js">
+  </script>
+  <!--  OwlCarousel 2 - Filter -->
+  <script src="https://huynhhuynh.github.io/owlcarousel2-filter/dist/owlcarousel2-filter.min.js"></script>
+  <!-- custom js -->
+  <script type="text/javascript" src="js/custom.js"></script>
+  
+  <!-- Google Map -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap">
+  </script>
+</body>
+</html>
+

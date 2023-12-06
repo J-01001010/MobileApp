@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>QR CODE GENERATOR</title>
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+            <h1>QR Code Generator</h1>
+            <p>Please type your RFID Number and Non-Residence unique number.</p>
+        </header>
+        <div class="form">
+            <input type="text" placeholder="Enter RFID Number...">
+            <input type="text" placeholder="Enter Non-Residence unique number... ">
+            <input type="text" placeholder="Number of generated QR code...">
+            <button id="generateBtn">Generate QR Code</button>
+        </div>
+        <div class="qr-code">
+            <img src="" alt="">
+        </div>
+        <div class="form-1">
+            <button id="downloadBtn">Download QR Code</button>
+            <button id="logoutBtn">Logout</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        const wrapper = document.querySelector(".wrapper");
+        const qrInputs = wrapper.querySelectorAll(".form input");
+        const qrImg = wrapper.querySelector(".qr-code img");
+        const generateBtn = wrapper.querySelector(".form button");
+
+        generateBtn.addEventListener("click", () => {
+            let qrValue = Array.from(qrInputs).map(input => input.value).join(" - ");
+            if (!qrValue) return;
+
+            generateBtn.innerText = "Generating QR Code....";
+            qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=170x170&data=${qrValue}`;
+            
+            qrImg.addEventListener("load", () => {
+                wrapper.classList.add("active");
+                generateBtn.innerText = "Generate QR Code";
+            });
+        });
+
+        qrInputs.forEach(input => {
+            input.addEventListener("keyup", () => {
+                if (!qrInputs.some(input => input.value)) {
+                    wrapper.classList.remove("active");
+                }
+            });
+        });
+
+        // Download QR Code
+        document.getElementById("downloadBtn").addEventListener("click", async () => {
+            const dataUrl = qrImg.src;
+            const blob = await fetch(dataUrl).then(response => response.blob());
+
+            const a = document.createElement("a");
+            const url = window.URL.createObjectURL(blob);
+            a.href = url;
+            a.download = "qrcode.png";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        });
+        document.getElementById("logoutBtn").addEventListener("click", () => {
+            window.location.href = "login.html";
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator</title>
+    <script src="qrcode.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+
+        #qrcode {
+            max-width: 100%;
+        }
+
+        #downloadBtn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>QR Code Generator</h1>
+
+    <div id="qrcode"></div>
+
+    <button id="downloadBtn">Download QR Code</button>
+
+    <script>
+        const textToEncode = "Hello, this is your QR Code content!";
+
+        const qrcode = new QRCode(document.getElementById("qrcode"), {
+            text: textToEncode,
+            width: 256,
+            height: 256,
+        });
+
+        // Download QR Code
+        document.getElementById("downloadBtn").addEventListener("click", () => {
+            const canvas = document.querySelector("canvas");
+            const dataUrl = canvas.toDataURL("image/png");
+
+            const a = document.createElement("a");
+            a.href = dataUrl;
+            a.download = "qrcode.png";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        });
+    </script>
+</body>
+</html>
