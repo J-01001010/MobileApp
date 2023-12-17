@@ -95,15 +95,15 @@
         console.log("Client received data:", data);
 
         if (data.startsWith("Invalid username or password")) {
-          alert("Invalid username or password. Please check your credentials and try again.");
+          //alert("Invalid username or password. Please check your credentials and try again.");
         } else if (data.startsWith("Internal server error")) {
-          alert("Internal server error. Please try again later.");
+          //alert("Internal server error. Please try again later.");
         } else if (data.startsWith("Login successful")) {
-          alert("Login successfully. Welcome residence of Monte Brisa.");
+          //alert("Login successfully. Welcome residence of Monte Brisa.");
           window.location.href = '/qrgen.html';
         } else {
           console.error("Server response:", data);
-          alert("An unexpected error occurred. Please try again.");
+          //alert("An unexpected error occurred. Please try again.");
         }
       }
       function togglePassword() {
